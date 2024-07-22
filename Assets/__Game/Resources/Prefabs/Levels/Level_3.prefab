@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 7942468345822059732, guid: a454cc821da5e1b419971d0230763865,
         type: 3}
       propertyPath: _maxTime
-      value: 35
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8690456869660680946, guid: a454cc821da5e1b419971d0230763865,
         type: 3}
@@ -86,6 +86,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9124004346981231718, guid: a454cc821da5e1b419971d0230763865,
+        type: 3}
+      propertyPath: _questStartClip
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a454cc821da5e1b419971d0230763865, type: 3}
