@@ -1,4 +1,6 @@
 ﻿using __Game.Resources.Scripts.EventBus;
+using Assets.__Game.Resources.Scripts.Game.States;
+using Assets.__Game.Scripts.Infrastructure;
 using DG.Tweening;
 using System;
 using System.Collections;
@@ -37,11 +39,11 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
     private List<Vector3> _placedPositions = new List<Vector3>();
     private int _currentTutorialIndex = 0;
 
-    private PuzzlesContainer _puzzlesContainer;
+    private GameBootstrapper _gameBootstrapper;
 
     private void Awake()
     {
-      _puzzlesContainer = GetComponentInParent<PuzzlesContainer>();
+      _gameBootstrapper = GameBootstrapper.Instance;
 
       ClearSpriteRenderers();
     }
@@ -64,6 +66,8 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
 
       if (_tutorial == true)
         StartTutorial();
+
+      EventBus<VariantsAssignedEvent>.Raise(new VariantsAssignedEvent());
     }
 
     private void ClearSpriteRenderers()
@@ -149,21 +153,20 @@ namespace Assets.__Game.Resources.Scripts._GameStuff
       _completeParticles.Play();
       _particlesAudio.Play();
 
-      EventBus<VariantAudioClickedEvent>.Raise(new VariantAudioClickedEvent { AudioClip = _puzzleClip });
+      //EventBus<VariantAudioClickedEvent>.Raise(new VariantAudioClickedEvent { AudioClip = _puzzleClip });
 
       StartCoroutine(DoOnPuzzleCompleted());
     }
 
     private IEnumerator DoOnPuzzleCompleted()
     {
-      yield return new WaitForSeconds(_puzzleClip.length);
-
-      if (_puzzlesContainer.SinglePuzzleToComplete == false)
-        gameObject.SetActive(false);
+      yield return new WaitForSeconds(1);
 
       Destroy(_completeParticles.gameObject);
 
       PuzzleCompleted?.Invoke();
+
+      _gameBootstrapper.StateMachine.ChangeState(new GameWinState(_gameBootstrapper));
     }
 
     private void StartTutorial()
